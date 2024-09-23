@@ -70,4 +70,24 @@ export const LoginScreenStyles = {
     fontSize: 16,
     fontWeight: 'bold',
   },
+  registerButton: {
+    marginTop: 20,
+    backgroundColor: '#0057e7',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  registerButtonText: {
+    color: '#FFF',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  registerText: {
+    marginTop: 20,
+    color: '#FFF',
+    fontSize: 16,
+    textAlign: 'center',
+    textDecorationLine: 'underline', // Esto hace que parezca un enlace
+  },
 };

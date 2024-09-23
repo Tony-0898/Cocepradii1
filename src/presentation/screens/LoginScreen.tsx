@@ -1,81 +1,78 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Image, Button, ImageBackground, Alert, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { useNavigation } from '@react-navigation/native';  // Importamos el hook de navegación
-import { LoginScreenStyles as styles } from '../styles/LoginScreenStyles';  // Importamos los estilos
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LoginScreenStyles as styles } from '../styles/LoginScreenStyles';
 
 const LoginScreen = () => {
-  const navigation = useNavigation();  // Hook para navegación
-  const [usuario, setUsuario] = useState('');  // Estado para usuario
-  const [contraseña, setContraseña] = useState('');  // Estado para contraseña
-  const [role, setRole] = useState(''); // Estado para el rol seleccionado ('admin' o 'tecnico')
+  const navigation = useNavigation();
+  const [usuario, setUsuario] = useState('');
+  const [contraseña, setContraseña] = useState('');
+  const [role, setRole] = useState('');
+  const [isRegistered, setIsRegistered] = useState(false);
 
-  // Credenciales predefinidas para administrador y técnico
-  const credenciales = {
-    admin: {
-      usuario: 'admin',
-      contraseña: 'admin',
-    },
-    tecnico: {
-      usuario: 'user',
-      contraseña: 'user',
-    },
-  };
+  useEffect(() => {
+    const checkRegistration = async () => {
+      try {
+        const registered = await AsyncStorage.getItem('isRegistered');
+        if (registered) {
+          setIsRegistered(true);
+        }
+      } catch (error) {
+        console.error('Error al verificar el registro:', error);
+      }
+    };
 
-  // Función para manejar la autenticación
+    checkRegistration();
+  }, []);
+
   const handleLogin = () => {
     if (usuario === '' || contraseña === '') {
       Alert.alert('ERROR DE CREDENCIALES', 'Por favor ingrese un usuario y contraseña válidos.');
     } else {
-      // Verificar credenciales según el rol seleccionado
-      if (role === 'admin' && usuario === credenciales.admin.usuario && contraseña === credenciales.admin.contraseña) {
-        navigation.navigate('Admin');  // Navega a la pantalla de administrador
-      } else if (role === 'tecnico' && usuario === credenciales.tecnico.usuario && contraseña === credenciales.tecnico.contraseña) {
-        navigation.navigate('User');  // Navega a la pantalla de técnico (usuario)
+      if (role === 'admin' && usuario === 'admin' && contraseña === 'admin') {
+        navigation.navigate('Admin');
+      } else if (role === 'tecnico' && usuario === 'user' && contraseña === 'user') {
+        navigation.navigate('User');
       } else {
         Alert.alert('ERROR ', 'Por favor Ingrese el Usuario y contraseña Asignados');
       }
     }
   };
 
-  // Función para manejar el toque fuera del formulario
   const handleTouch = () => {
-    Keyboard.dismiss();  // Oculta el teclado si está visible
-    setRole('');  // Oculta el formulario
+    Keyboard.dismiss();
+    setRole('');
   };
 
-  // Estilo condicional del formulario basado en el rol
-  const formBackgroundColor = role === 'admin' 
-    ? styles.adminFormContainer 
+  const formBackgroundColor = role === 'admin'
+    ? styles.adminFormContainer
     : role === 'tecnico' ? styles.tecnicoFormContainer : null;
 
   return (
     <TouchableWithoutFeedback onPress={handleTouch}>
       <View style={styles.container}>
-        {/* Imagen de fondo animada */}
         <ImageBackground
-          source={require('../pictures/Pexel2.jpg')}  // Imagen animada local
+          source={require('../pictures/Pexel2.jpg')}
           style={styles.background}
         >
-
-          {/* Imagen del logo */}
           <Image 
-            source={require('../pictures/cocepng.png')} // Imagen del logo local
+            source={require('../pictures/cocepng.png')}
             style={styles.logo}
           />
 
-          {/* Elección del rol */}
           {role === '' ? (
             <View style={styles.buttonContainer}>
               <TouchableOpacity
                 style={[styles.adminButton, styles.button]}
-                onPress={() => setRole('admin')}  // Selecciona el rol de administrador
+                onPress={() => setRole('admin')}
               >
                 <Text style={styles.buttonText}>Administrador</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={[styles.tecnicoButton, styles.button]}
-                onPress={() => setRole('tecnico')}  // Selecciona el rol de técnico
+                onPress={() => setRole('tecnico')}
               >
                 <Text style={styles.buttonText}>Técnico</Text>
               </TouchableOpacity>
@@ -89,7 +86,7 @@ const LoginScreen = () => {
                   placeholder="Ingrese su usuario"
                   placeholderTextColor="#FFF"
                   value={usuario}
-                  onChangeText={setUsuario}  // Almacenamos el texto del input
+                  onChangeText={setUsuario}
                 />
 
                 <Text style={styles.label}>Contraseña</Text>
@@ -99,17 +96,23 @@ const LoginScreen = () => {
                   secureTextEntry
                   placeholderTextColor="#FFF"
                   value={contraseña}
-                  onChangeText={setContraseña}  // Almacenamos el texto del input
+                  onChangeText={setContraseña}
                 />
 
-                {/* Botón para iniciar sesión */}
                 <Button
                   title="Iniciar Sesión"
-                  onPress={handleLogin}  // Llama a la función handleLogin
-                  color="#0057e7" // Azul eléctrico
+                  onPress={handleLogin}
+                  color="#0057e7"
                 />
               </View>
             </View>
+          )}
+
+          {/* Mostrar "Registrarme" si el usuario no está registrado */}
+          {!isRegistered && (
+            <TouchableOpacity onPress={() => navigation.navigate('Registro')}>
+              <Text style={styles.registerText}>Registrarme</Text>
+            </TouchableOpacity>
           )}
         </ImageBackground>
       </View>
@@ -118,4 +121,3 @@ const LoginScreen = () => {
 };
 
 export default LoginScreen;
-
