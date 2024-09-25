@@ -53,7 +53,7 @@ const LoginScreen = () => {
     <TouchableWithoutFeedback onPress={handleTouch}>
       <View style={styles.container}>
         <ImageBackground
-          source={require('../pictures/Pexel2.jpg')}
+          source={require('../pictures/Coce7.jpg')}
           style={styles.background}
         >
           <Image 
@@ -103,6 +103,7 @@ const LoginScreen = () => {
                   title="Iniciar Sesión"
                   onPress={handleLogin}
                   color="#0057e7"
+                  
                 />
               </View>
             </View>

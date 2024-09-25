@@ -24,9 +24,11 @@ export const LoginScreenStyles = {
   },
   adminFormContainer: {
     backgroundColor: 'rgba(255, 69, 0, 0.7)', // Fondo naranja para administrador
+    borderRadius:25,
   },
   tecnicoFormContainer: {
     backgroundColor: 'rgba(0, 128, 0, 0.7)', // Fondo verde para técnico
+    borderRadius:25,
   },
   label: {
     color: '#FFF',
@@ -77,6 +79,7 @@ export const LoginScreenStyles = {
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius:25,
   },
   registerButtonText: {
     color: '#FFF',

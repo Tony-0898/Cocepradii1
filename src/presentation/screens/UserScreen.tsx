@@ -1,25 +1,37 @@
-// src/presentation/screens/UserScreen.tsx
 import React from 'react';
-import { View, Text, Button, StyleSheet, ImageBackground, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const UserScreen = () => {
   const navigation = useNavigation();
 
+  // Datos de prueba para el perfil del usuario
+  const userProfile = {
+    name: 'Juan Pérez',
+    project: 'Caminos a la Resiliencia',
+    vehiclePlate: 'ABC-1234',  // Placa del vehículo
+    vehicleType: 'Camioneta',    // Tipo de vehículo
+    additionalInfo: 'Información Adicional',
+  };
+
   return (
     <ImageBackground
-      source={require('../pictures/Pexel3.jpg')}
+      source={require('../pictures/Coce8.jpg')}
       style={styles.background}
     >
-      {/* Sección de información del usuario */}
+      {/* Sección de información del usuario con fondo semitransparente */}
       <View style={styles.headerContainer}>
-        <Image
-          source={require('../pictures/fondoTonos.jpg')}  // Imagen del usuario
-          style={styles.userPhoto}
-        />
-        <Text style={styles.userName}>Nombre del Usuario</Text>
-        <Text style={styles.userInfo}>Proyecto: Proyecto Ejemplo</Text>
-        <Text style={styles.userInfo}>Otro Dato: Información Adicional</Text>
+        <View style={styles.infoBox}>
+          <Image
+            source={require('../pictures/fondoTonos.jpg')}  // Imagen del usuario
+            style={styles.userPhoto}
+          />
+          <Text style={styles.userName}>{userProfile.name}</Text>
+          <Text style={styles.userInfo}>Proyecto: {userProfile.project}</Text>
+          <Text style={styles.userInfo}>Placa: {userProfile.vehiclePlate}</Text>
+          <Text style={styles.userInfo}>Tipo de Vehículo: {userProfile.vehicleType}</Text>
+          <Text style={styles.userInfo}>{userProfile.additionalInfo}</Text>
+        </View>
       </View>
 
       {/* Sección de botones */}
@@ -33,21 +45,17 @@ const UserScreen = () => {
 
         <TouchableOpacity
           style={styles.buttonWrapper}
-          onPress={() => {
-            // Lógica para navegación
-          }}
+          onPress={() => navigation.navigate('Mantenimiento')}  // Navegación a MantenimientoScreen
         >
           <Text style={styles.buttonText}>Realizar Reporte de Mantenimiento</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.buttonWrapper}
-          onPress={() => {
-            // Lógica para navegación
-          }}
+          onPress={() => navigation.navigate('Registros')}
         >
-          <Text style={styles.buttonText}>Enviar Consolidación</Text>
-        </TouchableOpacity>
+          <Text style={styles.buttonText}> Ver Registros </Text>
+        </TouchableOpacity >
       </View>
     </ImageBackground>
   );
@@ -65,6 +73,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: 50,
   },
+  infoBox: {
+    backgroundColor: 'rgba(189, 213, 231, 0.9)', // Fondo con color semitransparente (#bed5e7)
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
   userPhoto: {
     width: 100,
     height: 100,
@@ -74,11 +93,11 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: 'white',
+    color: '#3d8abe', // Color del nombre
   },
   userInfo: {
     fontSize: 16,
-    color: 'white',
+    color: '#58aadc', // Color de la información
   },
   buttonContainer: {
     flex: 1,
@@ -89,7 +108,7 @@ const styles = StyleSheet.create({
     width: '80%',
     marginBottom: 20,
     alignSelf: 'center',
-    backgroundColor: '#0057e7',
+    backgroundColor: '#3d8abe', // Color de fondo de los botones
     borderRadius: 10,
     overflow: 'hidden',
   },
@@ -102,5 +121,3 @@ const styles = StyleSheet.create({
 });
 
 export default UserScreen;
-
-

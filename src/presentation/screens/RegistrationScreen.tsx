@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, Image, Alert, ScrollView } from 'react-native';
-import { Picker } from '@react-native-picker/picker'; 
-import DateTimePicker from '@react-native-community/datetimepicker'; 
+import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons'; // Asegúrate de tener instalado react-native-vector-icons
 import { RegistrationScreenStyles as styles } from '../styles/RegistrationStylesScreen';
 
 const RegistrationScreen = () => {
@@ -13,6 +14,8 @@ const RegistrationScreen = () => {
   const [usuario, setUsuario] = useState('');
   const [contraseña, setContraseña] = useState('');
   const [confirmarContraseña, setConfirmarContraseña] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [identidad, setIdentidad] = useState('');
   const [proyecto, setProyecto] = useState('');
   const [unidadAsignada, setUnidadAsignada] = useState('');
@@ -80,17 +83,16 @@ const RegistrationScreen = () => {
       identidad === '' ||
       proyecto === '' ||
       unidadAsignada === '' ||
-      colorUnidad === '' ||
-      detallesFisicos === '' ||
+      (unidadAsignada !== 'vehiculo propio' && (colorUnidad === '' || detallesFisicos === '')) ||
       placaUnidad === '' ||
       !imagenPersonal
     ) {
-      Alert.alert('Error', 'Por favor, complete todos los campos.');
+      Alert.alert('Error', 'Por favor, complete todos los campos requeridos.');
     } else if (contraseña !== confirmarContraseña) {
       Alert.alert('Error', 'Las contraseñas no coinciden.');
     } else {
       Alert.alert('Registro Exitoso', 'Se ha registrado exitosamente.');
-      navigation.navigate('Inicio');  // Redirecciona a la pantalla de inicio de sesión
+      navigation.navigate('Inicio');
     }
   };
 
@@ -98,54 +100,88 @@ const RegistrationScreen = () => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
         <Text style={styles.label}>Nombre Completo</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese su nombre completo"
-          value={nombreCompleto}
-          onChangeText={setNombreCompleto}
-        />
+        <View style={styles.inputContainer}>
+          <Icon name="person-outline" size={20} color="#3d8abe" />
+          <TextInput
+            style={styles.input}
+            placeholder="Ingrese su nombre completo"
+            value={nombreCompleto}
+            onChangeText={setNombreCompleto}
+          />
+        </View>
 
         <Text style={styles.label}>Nombre de Usuario</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese su nombre de usuario"
-          value={usuario}
-          onChangeText={setUsuario}
-        />
+        <View style={styles.inputContainer}>
+          <Icon name="person-outline" size={20} color="#3d8abe" />
+          <TextInput
+            style={styles.input}
+            placeholder="Ingrese su nombre de usuario"
+            value={usuario}
+            onChangeText={setUsuario}
+          />
+        </View>
 
         <Text style={styles.label}>Contraseña</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese su contraseña"
-          value={contraseña}
-          secureTextEntry
-          onChangeText={setContraseña}
-        />
+        <View style={styles.passwordContainer}>
+          <View style={styles.inputContainer}>
+            <Icon name="lock-closed-outline" size={20} color="#3d8abe" />
+            <TextInput
+              style={styles.input}
+              placeholder="Ingrese su contraseña"
+              value={contraseña}
+              secureTextEntry={!showPassword}
+              onChangeText={setContraseña}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={showPassword ? styles.hideButton : styles.showButton}
+          >
+            <Text style={styles.toggleButtonText}>{showPassword ? 'Ocultar' : 'Mostrar'}</Text>
+          </TouchableOpacity>
+        </View>
 
         <Text style={styles.label}>Confirmar Contraseña</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Confirme su contraseña"
-          value={confirmarContraseña}
-          secureTextEntry
-          onChangeText={setConfirmarContraseña}
-        />
+        <View style={styles.passwordContainer}>
+          <View style={styles.inputContainer}>
+            <Icon name="lock-closed-outline" size={20} color="#3d8abe" />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirme su contraseña"
+              value={confirmarContraseña}
+              secureTextEntry={!showConfirmPassword}
+              onChangeText={setConfirmarContraseña}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+            style={showConfirmPassword ? styles.hideButton : styles.showButton}
+          >
+            <Text style={styles.toggleButtonText}>{showConfirmPassword ? 'Ocultar' : 'Mostrar'}</Text>
+          </TouchableOpacity>
+        </View>
 
         <Text style={styles.label}>Identidad</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese su número de identidad"
-          value={identidad}
-          onChangeText={setIdentidad}
-        />
+        <View style={styles.inputContainer}>
+          <Icon name="id-card-outline" size={20} color="#3d8abe" />
+          <TextInput
+            style={styles.input}
+            placeholder="Ingrese su número de identidad"
+            value={identidad}
+            onChangeText={setIdentidad}
+          />
+        </View>
 
         <Text style={styles.label}>Proyecto al que pertenece</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese el nombre del proyecto al que pertenece"
-          value={proyecto}
-          onChangeText={setProyecto}
-        />
+        <View style={styles.inputContainer}>
+          <Icon name="folder-outline" size={20} color="#3d8abe" />
+          <TextInput
+            style={styles.input}
+            placeholder="Ingrese el nombre del proyecto al que pertenece"
+            value={proyecto}
+            onChangeText={setProyecto}
+          />
+        </View>
 
         <Text style={styles.label}>Unidad Asignada</Text>
         <Picker
@@ -156,60 +192,74 @@ const RegistrationScreen = () => {
           <Picker.Item label="Seleccione una unidad" value="" />
           <Picker.Item label="Motocicleta" value="motocicleta" />
           <Picker.Item label="Vehículo Pickup" value="vehiculo pickup" />
+          <Picker.Item label="Vehículo Propio" value="vehiculo propio" />
         </Picker>
 
-        <Text style={styles.label}>Color de la Unidad</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese el color de la unidad"
-          value={colorUnidad}
-          onChangeText={setColorUnidad}
-        />
+        {(unidadAsignada === 'motocicleta' || unidadAsignada === 'vehiculo pickup') && (
+          <>
+            <Text style={styles.label}>Color de la Unidad</Text>
+            <View style={styles.inputContainer}>
+              <Icon name="color-palette-outline" size={20} color="#3d8abe" />
+              <TextInput
+                style={styles.input}
+                placeholder="Ingrese el color de la unidad"
+                value={colorUnidad}
+                onChangeText={setColorUnidad}
+              />
+            </View>
 
-        <Text style={styles.label}>Detalles Físicos (Posee algún golpe)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Detalles físicos"
-          value={detallesFisicos}
-          onChangeText={setDetallesFisicos}
-        />
+            <Text style={styles.label}>Detalles Físicos (Posee algún golpe)</Text>
+            <View style={styles.inputContainer}>
+              <Icon name="alert-circle-outline" size={20} color="#3d8abe" />
+              <TextInput
+                style={styles.input}
+                placeholder="Detalles físicos"
+                value={detallesFisicos}
+                onChangeText={setDetallesFisicos}
+              />
+            </View>
 
-        <Text style={styles.label}>Placa de la Unidad</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Ingrese la placa de la unidad"
-          value={placaUnidad}
-          onChangeText={setPlacaUnidad}
-        />
-
-        <Text style={styles.label}>Fecha de Caducidad de la Revisión</Text>
-        <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.datePicker}>
-          <Text style={styles.dateText}>{fechaCaducidad.toLocaleDateString()}</Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            value={fechaCaducidad}
-            mode="date"
-            display="default"
-            onChange={onChangeFecha}
-          />
+            <Text style={styles.label}>Fecha de Caducidad de la Revisión</Text>
+            <TouchableOpacity onPress={() => setShowDatePicker(true)} style={styles.datePicker}>
+              <Text style={styles.dateText}>{fechaCaducidad.toLocaleDateString()}</Text>
+            </TouchableOpacity>
+            {showDatePicker && (
+              <DateTimePicker
+                value={fechaCaducidad}
+                mode="date"
+                display="default"
+                onChange={onChangeFecha}
+              />
+            )}
+          </>
         )}
 
-        <Text style={styles.label}>Fotografía Personal</Text>
+        {(unidadAsignada === 'motocicleta' || unidadAsignada === 'vehiculo pickup' || unidadAsignada === 'vehiculo propio') && (
+          <>
+            <Text style={styles.label}>Placa de la Unidad</Text>
+            <View style={styles.inputContainer}>
+              <Icon name="car-outline" size={20} color="#3d8abe" />
+              <TextInput
+                style={styles.input}
+                placeholder="Ingrese la placa de la unidad"
+                value={placaUnidad}
+                onChangeText={setPlacaUnidad}
+              />
+            </View>
+          </>
+        )}
 
-        <TouchableOpacity style={styles.imagePickerButton} onPress={tomarFoto}>
-          <Text style={styles.buttonText}>Tomar Fotografía</Text>
-        </TouchableOpacity>
-
+        <Text style={styles.label}>Imagen Personal</Text>
         <TouchableOpacity style={styles.imagePickerButton} onPress={seleccionarImagen}>
           <Text style={styles.buttonText}>Seleccionar Imagen</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.imagePickerButton} onPress={tomarFoto}>
+          <Text style={styles.buttonText}>Tomar Foto</Text>
+        </TouchableOpacity>
 
-        {imagenPersonal && (
-          <Image source={{ uri: imagenPersonal }} style={styles.imagen} />
-        )}
+        {imagenPersonal && <Image source={{ uri: imagenPersonal }} style={styles.imagen} />}
 
-        <Button title="Registrarme" onPress={handleRegistro} color="#0057e7" />
+        <Button title="Registrar" onPress={handleRegistro} color="#0057e7" />
       </View>
     </ScrollView>
   );
