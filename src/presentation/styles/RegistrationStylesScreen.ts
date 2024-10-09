@@ -17,6 +17,17 @@ export const RegistrationScreenStyles = {
     borderRadius: 5,
     marginBottom: 15,
     backgroundColor: '#fff', // Fondo blanco para el input
+    flex: 1, // Asegura que el input ocupe todo el espacio disponible
+  },
+  inputContainer: { // contenedores de cada Input del formulario
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#fff', // Color del borde
+    padding: 2,
+    borderRadius: 5,
+    marginBottom: 15,
+    backgroundColor: '#fff',
   },
   picker: {
     borderWidth: 1,
@@ -39,10 +50,12 @@ export const RegistrationScreenStyles = {
     color: '#58aadc', // Color del texto de la fecha
   },
   imagePickerButton: {
-    backgroundColor: '#0057e7',
+    backgroundColor: '#3d8abe',
     padding: 10,
     borderRadius: 5,
     marginBottom: 15,
+    width: 130,
+    height: 80,
   },
   buttonText: {
     color: '#fff',
@@ -61,9 +74,7 @@ export const RegistrationScreenStyles = {
     backgroundColor: '#3d8abe', // Mismo color que los labels
   },
   passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    marginBottom: 15, // Espacio entre los elementos
   },
   showButton: {
     backgroundColor: '#55AD9B', // Color del botón
@@ -78,5 +89,19 @@ export const RegistrationScreenStyles = {
   toggleButtonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
+  imagePickerButton: {
+    flex: 1,
+    backgroundColor: '#3d8abe',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    marginHorizontal: 5,
+    borderRadius: 10,
   },
 };
