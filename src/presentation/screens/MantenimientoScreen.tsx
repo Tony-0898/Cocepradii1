@@ -1,15 +1,44 @@
-import React from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, Alert, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'; // Importa la librería de íconos
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, ScrollView, Alert, TouchableOpacity, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'; // Importa las funciones para cámara y galería
 
 const MantenimientoScreen = () => {
-  // Ejemplo de datos estáticos para el formulario
+  const [descripcion, setDescripcion] = useState(''); // Estado para la descripción del problema
+  const [imageUri, setImageUri] = useState(null); // Estado para la imagen seleccionada
+
   const form = {
     nombreConductor: 'Juan Pérez',
   };
 
   const handleReporte = () => {
     Alert.alert("Reporte enviado", "Tu reporte de mantenimiento ha sido enviado con éxito.");
+  };
+
+  // Función para tomar una foto
+  const handleTakePhoto = () => {
+    launchCamera({ mediaType: 'photo', saveToPhotos: true }, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.errorMessage);
+      } else if (response.assets) {
+        setImageUri(response.assets[0].uri); // Guarda la imagen seleccionada
+      }
+    });
+  };
+
+  // Función para seleccionar una imagen de la galería
+  const handleSelectFromGallery = () => {
+    launchImageLibrary({ mediaType: 'photo' }, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorCode) {
+        console.log('ImagePicker Error: ', response.errorMessage);
+      } else if (response.assets) {
+        setImageUri(response.assets[0].uri); // Guarda la imagen seleccionada
+      }
+    });
   };
 
   return (
@@ -31,17 +60,31 @@ const MantenimientoScreen = () => {
         <TextInput 
           style={styles.textArea} 
           placeholder="Describe el problema o el mantenimiento requerido" 
-          multiline 
+          multiline
+          onChangeText={(text) => setDescripcion(text)} // Actualiza el estado con la descripción
         />
+
+        {/* Mostrar la imagen tomada o seleccionada */}
+        {imageUri && (
+          <Image source={{ uri: imageUri }} style={styles.image} />
+        )}
 
         {/* Botones para capturar imágenes */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.iconButton} onPress={() => {}}>
+          <TouchableOpacity 
+            style={[styles.iconButton, { backgroundColor: descripcion ? '#3d8abe' : '#ccc' }]} 
+            onPress={handleTakePhoto}
+            disabled={!descripcion} // Deshabilita el botón si no hay descripción
+          >
             <Icon name="camera" size={30} color="#fff" />
             <Text style={styles.buttonText}>Tomar Foto</Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={styles.iconButton} onPress={() => {}}>
+          <TouchableOpacity 
+            style={[styles.iconButton, { backgroundColor: descripcion ? '#3d8abe' : '#ccc' }]} 
+            onPress={handleSelectFromGallery}
+            disabled={!descripcion} // Deshabilita el botón si no hay descripción
+          >
             <Icon name="images" size={30} color="#fff" />
             <Text style={styles.buttonText}>Galería</Text>
           </TouchableOpacity>
@@ -105,7 +148,6 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     alignItems: 'center',
-    backgroundColor: '#3d8abe',
     padding: 10,
     borderRadius: 5,
     width: 120,
@@ -126,6 +168,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+    alignSelf: 'center',
   },
 });
 

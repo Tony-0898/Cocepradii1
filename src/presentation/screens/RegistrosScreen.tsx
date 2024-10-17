@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, Alert, Modal, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, Button, Alert, Modal, ActivityIndicator, ScrollView, Image } from 'react-native';
 import { RegistrosStyles as styles } from '../styles/RegistrosStyles';
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
@@ -32,6 +32,14 @@ const RegistrosScreen = () => {
       // Crear un libro y una hoja de cálculo
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.aoa_to_sheet([
+        // Agregar encabezados adicionales
+        ['Título', 'Comité Central Pro Agua y Desarrollo Integral de Intibucá'],
+        ['Nombre', userProfile.name],
+        ['Proyecto', userProfile.project],
+        ['Placa', userProfile.vehiclePlate],
+        ['Tipo de Vehículo', userProfile.vehicleType],
+        ['Información Adicional', userProfile.additionalInfo],
+        [],
         ['Piloto', 'Numero de Factura', 'Kilometraje de Salida', 'Cantidad de Combustible (Litros)', 'Valor pagado de litros', 'Kilometraje de Llegada', 'Lugar y Hora de Salida', 'Destino y Hora de Llegada', 'Proposito', 'Nombre del Proyecto', 'Fecha'],
         ...mockData
       ]);
@@ -69,6 +77,17 @@ const RegistrosScreen = () => {
   return (
     <View style={styles.background}>
       <View style={styles.container}>
+        {/* Imagen en la parte superior */}
+        <Image 
+          source={require('../pictures/cocepng.png')} 
+          style={styles.headerImage} 
+        />
+
+        {/* Título sobre la imagen */}
+        <Text style={styles.headerTitle}>
+          Comité Central Pro Agua y Desarrollo Integral de Intibucá
+        </Text>
+
         {/* Información del usuario */}
         <View style={styles.headerContainer}>
           <View style={styles.infoBox}>
@@ -80,20 +99,22 @@ const RegistrosScreen = () => {
           </View>
         </View>
 
-        {/* Tabla de datos */}
-        <ScrollView style={styles.tableContainer}>
-          <View style={styles.header}>
-            {['Piloto', 'Factura', 'Kilometraje Salida', 'Litros', 'Valor Litros', 'Kilometraje Llegada', 'Lugar/Hora Salida', 'Destino/Hora Llegada', 'Proposito', 'Proyecto', 'Fecha'].map((headerText) => (
-              <Text key={headerText} style={styles.headerText}>{headerText}</Text>
-            ))}
-          </View>
-          {mockData.map((row, rowIndex) => (
-            <View key={rowIndex} style={styles.row}>
-              {row.map((cellText, cellIndex) => (
-                <Text key={cellIndex} style={styles.cellText}>{cellText}</Text>
+        {/* Desplazamiento horizontal y vertical para la tabla */}
+        <ScrollView horizontal={true} style={styles.horizontalScroll}>
+          <ScrollView style={styles.tableContainer}>
+            <View style={styles.header}>
+              {['Piloto', 'Factura', 'Kilometraje Salida', 'Litros', 'Valor Litros', 'Kilometraje Llegada', 'Lugar/Hora Salida', 'Destino/Hora Llegada', 'Proposito', 'Proyecto', 'Fecha'].map((headerText) => (
+                <Text key={headerText} style={styles.headerText}>{headerText}</Text>
               ))}
             </View>
-          ))}
+            {mockData.map((row, rowIndex) => (
+              <View key={rowIndex} style={styles.row}>
+                {row.map((cellText, cellIndex) => (
+                  <Text key={cellIndex} style={styles.cellText}>{cellText}</Text>
+                ))}
+              </View>
+            ))}
+          </ScrollView>
         </ScrollView>
 
         {/* Botón para crear el documento */}

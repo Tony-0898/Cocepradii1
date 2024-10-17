@@ -1,4 +1,3 @@
-// src/presentation/styles/RegistrosStyles.ts
 import { StyleSheet } from 'react-native';
 
 export const RegistrosStyles = StyleSheet.create({
@@ -15,10 +14,27 @@ export const RegistrosStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  headerImage: {
+    width: 200,  // Ajusta el tamaño de la imagen aquí
+    height: 200, // Ajusta la altura de la imagen aquí
+    resizeMode: 'contain',
+    marginBottom: -50,
+    marginTop:-40,
+    
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#3d8abe',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   headerContainer: {
     width: '90%',
     alignItems: 'center',
     marginBottom: 20,
+    // También puedes ajustar el margen superior aquí para mover el contenedor entero
+    // marginTop: -20, // Descomentar para mover el contenedor más arriba
   },
   infoBox: {
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -40,18 +56,6 @@ export const RegistrosStyles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#3d8abe',
-  },
-  description: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 40,
-    color: '#333',
-  },
   tableContainer: {
     width: '100%',
     marginBottom: 20,
@@ -65,16 +69,10 @@ export const RegistrosStyles = StyleSheet.create({
     borderColor: '#ccc',
   },
   headerText: {
-    width: 150,  // Cambia 'flex' por 'width' para asegurar un ancho fijo
+    width: 150, // Ajustar el ancho de las columnas de la tabla
     fontWeight: 'bold',
     padding: 10,
     textAlign: 'center',
-  },
-  cellText: {
-    width: 150,  // Asegura que las celdas tengan el mismo ancho que los encabezados
-    padding: 10,
-    textAlign: 'center',
-    color: '#555',
   },
   row: {
     flexDirection: 'row',
@@ -84,10 +82,13 @@ export const RegistrosStyles = StyleSheet.create({
   cellText: {
     flex: 1,
     padding: 10,
-    textAlign: 'center',    // Centramos el texto en las celdas
+    textAlign: 'center',  
     color: '#555',
-    minWidth: 100,          // Ajuste mínimo de ancho de las celdas
-    flexShrink: 1,          // Permite que las celdas se ajusten según el contenido
+    minWidth: 100,
+    flexShrink: 1,
+  },
+  horizontalScroll: {
+    marginBottom: 20, // Espacio debajo del scroll horizontal
   },
   modalContainer: {
     flex: 1,
@@ -105,7 +106,6 @@ export const RegistrosStyles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
   },
   modalMessage: {
     fontSize: 16,
