@@ -97,7 +97,7 @@ export const RegistrosStyles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fondo semi-transparente
   },
   modalContent: {
-    width: '80%',
+    width: '80%',,
     padding: 20,
     borderRadius: 10,
     backgroundColor: 'white',
